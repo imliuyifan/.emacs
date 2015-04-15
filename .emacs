@@ -59,7 +59,6 @@
  )
 (add-hook 'c-mode-hook 'my:flymake-google-init)
 (add-hook 'c++-mode-hook 'my:flymake-google-init)
-
 ;; start google-c-style with emacs
 (require 'google-c-style)
 (add-hook 'c-mode-common-hook 'google-set-c-style)
@@ -108,7 +107,8 @@
 ;; load my favoriate theme
 ;; (require 'sublime-themes)
 ;; (load-theme 'brin t)
-(load-theme 'zenburn t)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-color-theme-solarized")
+;; (load-theme 'zenburn t)
 
 ;; hide toolbar
 (custom-set-variables
@@ -116,6 +116,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
  '(send-mail-function (quote mailclient-send-it))
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -144,3 +145,34 @@
 ;; set the emacs PATH exactly same as OS X
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
+
+;;
+;; Globally map C-c t to a light/dark theme switcher
+;; Also pull-in graphene for better fonts
+
+(custom-set-variables '(solarized-termcolors 256))
+
+(setq solarized-default-background-mode 'dark)
+
+(load-theme 'solarized t)
+
+(defun set-background-mode (frame mode)
+ (set-frame-parameter frame 'background-mode mode)
+ (when (not (display-graphic-p frame))
+   (set-terminal-parameter (frame-terminal frame) 'background-mode mode))
+ (enable-theme 'solarized))
+
+(defun switch-theme ()
+ (interactive)
+ (let ((mode  (if (eq (frame-parameter nil 'background-mode) 'dark)
+                  'light 'dark)))
+   (set-background-mode nil mode)))
+
+(add-hook 'after-make-frame-functions
+         (lambda (frame) (set-background-mode frame solarized-default-background-mode)))
+
+(set-background-mode nil solarized-default-background-mode)
+
+(global-set-key (kbd "C-c t") 'switch-theme)
+
+;; (require 'graphene)
