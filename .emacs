@@ -185,3 +185,7 @@
 (require 'smart-compile)
 (add-hook 'c-mode-common-hook
  	            (lambda () (define-key c-mode-base-map (kbd "C-c C-l") 'smart-compile )))
+
+;; add sudo support (mainly for compile sources requiring sudo command)
+(server-start)
+(require 'sudo-ext)
