@@ -57,7 +57,7 @@
   '(flymake-google-cpplint-command "/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/cpplint"))
  (flymake-google-cpplint-load)
  )
-(add-hook 'c-mode-hook 'my:flymake-google-init)
+;; (add-hook 'c-mode-hook 'my:flymake-google-init)
 (add-hook 'c++-mode-hook 'my:flymake-google-init)
 ;; start google-c-style with emacs
 (require 'google-c-style)
@@ -116,14 +116,18 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+ '(custom-safe-themes
+   (quote
+    ("31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
  '(send-mail-function (quote mailclient-send-it))
+ '(solarized-termcolors 16)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:background nil))))
  '(company-scrollbar-bg ((t (:background "#36342d"))) t)
  '(company-scrollbar-fg ((t (:background "#cce6c8"))) t)
  '(company-tooltip ((t (:inherit default :background "#3e4446" :foreground "#cce6c8"))) t)
@@ -150,7 +154,7 @@
 ;; Globally map C-c t to a light/dark theme switcher
 ;; Also pull-in graphene for better fonts
 
-(custom-set-variables '(solarized-termcolors 256))
+
 
 (setq solarized-default-background-mode 'dark)
 
@@ -176,3 +180,8 @@
 (global-set-key (kbd "C-c t") 'switch-theme)
 
 ;; (require 'graphene)
+
+;; let's add some smart cmpile package
+(require 'smart-compile)
+(add-hook 'c-mode-common-hook
+ 	            (lambda () (define-key c-mode-base-map (kbd "C-c C-l") 'smart-compile )))
